@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.Fragment1">
+    <data>
+    <import type="android.view.View" />
+    <variable
+        name="rvViewModel"
+        type="com.example.test_allen.viewmodel.RvViewModel" />
+
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecycleView_Data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{rvViewModel.isLoading?View.GONE:View.VISIBLE}"
+            />
+        <ProgressBar
+            android:id="@+id/rvLoading"
+            style="?android:progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="@{rvViewModel.isLoading?View.VISIBLE:View.GONE}"
+            />
+
+
+
+    </LinearLayout>
+</layout>

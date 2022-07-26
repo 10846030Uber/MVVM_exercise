@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="data"
+            type="com.example.test_allen.data_Format.Data" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        >
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/deviceID_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="設備編號："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/channelID_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="頻道編號："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deviceID_Title" />
+
+        <TextView
+            android:id="@+id/time_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="時間："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/channelID_Title"
+
+            />
+
+        <TextView
+            android:id="@+id/color_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="顏色："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/time_Title"
+            />
+
+        <TextView
+            android:id="@+id/helmet_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="頭盔："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/color_Title" />
+
+        <TextView
+            android:id="@+id/equipped_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="設備："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/helmet_Title"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/TitleGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="deviceID_Title,channelID_Title,time_Title,color_Title,helmet_Title,equipped_Title" />
+        <TextView
+            android:id="@+id/deviceID_Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(data.deviceID)}"
+            app:layout_constraintStart_toEndOf="@id/deviceID_Title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/channelID_Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(data.channelID)}"
+            app:layout_constraintStart_toEndOf="@id/channelID_Title"
+            app:layout_constraintTop_toBottomOf="@id/deviceID_Value" />
+
+        <TextView
+            android:id="@+id/time_Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.time}"
+            app:layout_constraintStart_toEndOf="@id/time_Title"
+            app:layout_constraintTop_toBottomOf="@id/channelID_Value"
+            />
+
+        <TextView
+            android:id="@+id/color_Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.color}"
+            app:layout_constraintStart_toEndOf="@id/color_Title"
+            app:layout_constraintTop_toBottomOf="@id/time_Value" />
+
+        <TextView
+            android:id="@+id/helmet_Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.hasHelmet?@string/yes:@string/no}"
+            app:layout_constraintStart_toEndOf="@+id/helmet_Title"
+            app:layout_constraintTop_toBottomOf="@id/color_Value" />
+
+        <TextView
+            android:id="@+id/equipped_Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.equipped}"
+            app:layout_constraintStart_toEndOf="@id/equipped_Title"
+            app:layout_constraintTop_toBottomOf="@id/helmet_Value"/>
+
+        <Button
+            android:id="@+id/button_revise"
+            android:layout_width="70dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="15dp"
+            android:text="修改"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/butto_delete"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/butto_delete"
+            android:layout_width="70dp"
+            android:layout_height="48dp"
+            android:text="刪除"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

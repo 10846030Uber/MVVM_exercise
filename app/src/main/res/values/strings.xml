@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">test_Allen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="yes">有</string>
+    <string name="no">沒有</string>
+</resources>

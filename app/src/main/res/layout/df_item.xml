@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <variable
+            name="data"
+            type="com.example.test_allen.data_Format.Data" />
+        <variable
+            name="rvViewModel"
+            type="com.example.test_allen.viewmodel.RvViewModel" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        >
+    <TextView
+        android:id="@+id/channelID_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="ChannelId:"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/time_Title_DL"
+        app:layout_constraintStart_toStartOf="@+id/time_Title_DL"
+        app:layout_constraintTop_toBottomOf="@+id/deviceID_Title_DL" />
+
+    <TextView
+        android:id="@+id/time_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="CaptureAt:"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/color_Title_DL"
+        app:layout_constraintEnd_toStartOf="@+id/time_TimePicker"
+        app:layout_constraintStart_toStartOf="@+id/color_Title_DL"
+        app:layout_constraintTop_toBottomOf="@+id/channelID_Title_DL" />
+
+    <TextView
+        android:id="@+id/color_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Color:"
+        android:textSize="24dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/helmet_Title_DL"
+        app:layout_constraintStart_toStartOf="@+id/helmet_Title_DL"
+        app:layout_constraintTop_toBottomOf="@+id/time_Title_DL"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/mask_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Mask:"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/vest_Title_DL"
+        app:layout_constraintStart_toStartOf="@+id/vest_Title_DL"
+        app:layout_constraintTop_toBottomOf="@+id/helmet_Title_DL" />
+
+    <TextView
+        android:id="@+id/deviceID_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="DeviceId:"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/channelID_Title_DL"
+        app:layout_constraintStart_toStartOf="@+id/channelID_Title_DL"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/helmet_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Helmet:"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/mask_Title_DL"
+        app:layout_constraintStart_toStartOf="@+id/mask_Title_DL"
+        app:layout_constraintTop_toBottomOf="@+id/color_Title_DL" />
+
+    <TextView
+        android:id="@+id/vest_Title_DL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vest:"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mask_Title_DL" />
+
+    <EditText
+        android:id="@+id/device_editText_DL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:text="@{String.valueOf(data.deviceID)}"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/deviceID_Title_DL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/deviceID_Title_DL" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="time_Title_DL,color_Title_DL,channelID_Title_DL,helmet_Title_DL,vest_Title_DL,mask_Title_DL,deviceID_Title_DL" />
+
+    <Spinner
+        android:id="@+id/channelID_Spinner_DL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/channelID_Title_DL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/channelID_Title_DL"
+        app:layout_constraintTop_toTopOf="@+id/channelID_Title_DL" />
+
+    <RadioGroup
+        android:id="@+id/color_RG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/color_Title_DL"
+        app:layout_constraintStart_toEndOf="@+id/color_Title_DL"
+        app:layout_constraintTop_toTopOf="@+id/color_Title_DL">
+
+        <RadioButton
+            android:id="@+id/color_RB_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="紅" />
+
+        <RadioButton
+            android:id="@+id/color_RB_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="綠" />
+
+        <RadioButton
+            android:id="@+id/color_RB_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="黃" />
+
+        <RadioButton
+            android:id="@+id/color_RB_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="藍" />
+
+    </RadioGroup>
+
+    <Switch
+        android:id="@+id/helmet_Switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:textOff="沒有"
+        android:textOn="有"
+        android:textColor="@color/black"
+        android:checked="@{data.hasHelmet}"
+        app:layout_constraintBottom_toBottomOf="@+id/helmet_Title_DL"
+        app:layout_constraintStart_toEndOf="@+id/helmet_Title_DL"
+        app:layout_constraintTop_toTopOf="@+id/helmet_Title_DL" />
+
+    <CheckBox
+        android:id="@+id/mask_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:checked="@{data.hasMask}"
+        app:layout_constraintBottom_toBottomOf="@+id/mask_Title_DL"
+        app:layout_constraintStart_toEndOf="@+id/mask_Title_DL"
+        app:layout_constraintTop_toTopOf="@+id/mask_Title_DL" />
+
+    <CheckBox
+        android:id="@+id/vest_CB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:checked="@{data.hasVest}"
+        app:layout_constraintBottom_toBottomOf="@+id/vest_Title_DL"
+        app:layout_constraintStart_toEndOf="@+id/vest_Title_DL"
+        app:layout_constraintTop_toTopOf="@+id/vest_Title_DL" />
+
+    <TimePicker
+        android:id="@+id/time_TimePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/time_Title_DL"
+        app:layout_constraintStart_toEndOf="@+id/time_Title_DL"
+        app:layout_constraintTop_toTopOf="@+id/time_Title_DL" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
