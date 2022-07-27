@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.Fragment1">
     <data>
     <import type="android.view.View" />
@@ -9,29 +10,70 @@
         type="com.example.test_allen.viewmodel.RvViewModel" />
 
     </data>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        >
+        <EditText
+            android:id="@+id/Search_EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="@{rvViewModel.isLoading?false:true}"
+            android:text="@={rvViewModel.inputSearchColor}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/Search_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查詢"
+            android:enabled="@{rvViewModel.isLoading?false:true}"
+            app:layout_constraintEnd_toStartOf="@+id/Add_Btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Search_EditText" />
+
+        <Button
+            android:id="@+id/Add_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新增"
+            android:onClick="@{()->rvViewModel.onAddButtonClick()}"
+            android:enabled="@{rvViewModel.isLoading?false:true}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/Search_Btn"
+            app:layout_constraintTop_toBottomOf="@+id/Search_EditText" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecycleView_Data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="@{rvViewModel.isLoading?View.GONE:View.VISIBLE}"
-            />
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Search_Btn" />
+
         <ProgressBar
             android:id="@+id/rvLoading"
             style="?android:progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="@{rvViewModel.isLoading?View.VISIBLE:View.GONE}"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

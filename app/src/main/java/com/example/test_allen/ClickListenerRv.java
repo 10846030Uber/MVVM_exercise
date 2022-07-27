@@ -9,6 +9,5 @@ import java.util.ArrayList;
 public interface ClickListenerRv {
     void onRemoveButtonClick(View view,int position);
     void onReviseButtonClick(View view,int position);
-    void onDataChanged(ArrayList<Data> data);
 
 }

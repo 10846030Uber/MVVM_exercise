@@ -40,7 +40,6 @@ import java.util.Calendar;
 
 public class DialogAddAndRevise extends androidx.fragment.app.DialogFragment {
     private ArrayList<String> spinnerArrayList;
-    private ArrayAdapter adapter;
     private int deviceId;
     private String captureAt;
     private String color;
@@ -53,80 +52,61 @@ public class DialogAddAndRevise extends androidx.fragment.app.DialogFragment {
     private String event;
     private RvViewModel rvViewModel;
     private final static String tag = Thread.currentThread().getStackTrace()[2].getClassName();
+    private AlertDialog.Builder builder;
 
-
-    public DialogAddAndRevise() {
-        event = "ADD";
-    }
+    public DialogAddAndRevise() {}
 
     public DialogAddAndRevise(int position) {
         this.position = position;
-        event = "REVISE";
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Log.e(tag, "DialogCreate");
-        rvViewModel = new ViewModelProvider(getActivity()).get(RvViewModel.class);
-        setSpinnerData();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        rvViewModel = new ViewModelProvider(requireActivity()).get(RvViewModel.class);
+        spinnerArrayList = rvViewModel.getSpinnerArrayList();
+        event = rvViewModel.getEvent();
+
         //創建一個LayoutInflater
         dfItemBinding = DfItemBinding.inflate(LayoutInflater.from(getContext()));
         dfItemBinding.setRvViewModel(rvViewModel);
-        if (rvViewModel.getDialogAddAndReviseData().getValue() != null) {
-            dfItemBinding.setData(rvViewModel.getDialogAddAndReviseData().getValue());
-            reviseDefaultData();
-        } else dfItemBinding.deviceEditTextDL.setText("");
+        if (event.equals("REVISE")) position = rvViewModel.getPosition();
+        DefaultData();
         //將View設至AlertDialog
-        builder.setView(dfItemBinding.getRoot());
         setSpinnerAdapter();
         setSpinnerListener();
-
-        //PositiveButton建立與onClick事件
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                setDeviceId();
-                setCaptureTimeFromTimePicker();
-                setColorFromRadioButton();
-                setHelmetFromSwitch();
-                setMaskFromCheckButton();
-                setVestFromCheckButton();
-                Data data = new Data(deviceId, channelId, captureAt, color, hasHelmet, hasMask, hasVest);
-                rvViewModel.setDialogDefaultData(data);
-                Log.e("event", event);
-                if (event == "ADD") {
-                    rvViewModel.addEquippedData();
-                } else if (event == "REVISE") {
-                    rvViewModel.reviseEquippedData(position);
-                }
-//                dialogListener.onPositiveButtonClick(DialogAddAndRevise.this);
-            }
-            //NegativeButton建立與onClick事件
-        }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-
+        initAlertBuilder();
 //        return super.onCreateDialog(savedInstanceState);
         return builder.create();
     }
 
-    public void setSpinnerData() {
-        spinnerArrayList = new ArrayList<>();
-        spinnerArrayList.add("13");
-        spinnerArrayList.add("17");
-        spinnerArrayList.add("5");
-        spinnerArrayList.add("27");
-        spinnerArrayList.add("1");
+    public void initAlertBuilder(){
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dfItemBinding.getRoot());
+        //PositiveButton建立與onClick事件
+        builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
+            setDeviceId();
+            setCaptureTimeFromTimePicker();
+            setColorFromRadioButton();
+            setHelmetFromSwitch();
+            setMaskFromCheckButton();
+            setVestFromCheckButton();
+            Data data = new Data(deviceId, channelId, captureAt, color, hasHelmet, hasMask, hasVest);
+            rvViewModel.setDialogDefaultData(data);
+            if (event.equals("ADD")) {
+                rvViewModel.addEquippedData();
+            } else if (event.equals("REVISE")) {
+                rvViewModel.reviseEquippedData(position);
+            }
+            rvViewModel.setDialogDisplay(false);
+        }).setNegativeButton("cancel", (dialogInterface, i) -> {
+            //NegativeButton建立與onClick事件
+        });
     }
 
     public void setSpinnerAdapter() {
-        adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, spinnerArrayList);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, spinnerArrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dfItemBinding.channelIDSpinnerDL.setAdapter(adapter);
 
@@ -150,6 +130,7 @@ public class DialogAddAndRevise extends androidx.fragment.app.DialogFragment {
 
     }
 
+    @SuppressLint("DefaultLocale")
     public void setCaptureTimeFromTimePicker() {
         LocalDateTime currentTime = LocalDateTime.now();
         if (rvViewModel.getDialogAddAndReviseData().getValue() != null) {
@@ -161,14 +142,19 @@ public class DialogAddAndRevise extends androidx.fragment.app.DialogFragment {
 
     public void setColorDefaultPosition() {
         String defaultColor = rvViewModel.getDialogAddAndReviseData().getValue().getColor();
-        if (defaultColor.equals("紅")) {
-            dfItemBinding.colorRBRed.setChecked(true);
-        }else if(defaultColor.equals("黃")){
-            dfItemBinding.colorRBYellow.setChecked(true);
-        }else if(defaultColor.equals("藍")){
-            dfItemBinding.colorRBBlue.setChecked(true);
-        }else if(defaultColor.equals("綠")){
-            dfItemBinding.colorRBGreen.setChecked(true);
+        switch (defaultColor) {
+            case "紅":
+                dfItemBinding.colorRBRed.setChecked(true);
+                break;
+            case "黃":
+                dfItemBinding.colorRBYellow.setChecked(true);
+                break;
+            case "藍":
+                dfItemBinding.colorRBBlue.setChecked(true);
+                break;
+            case "綠":
+                dfItemBinding.colorRBGreen.setChecked(true);
+                break;
         }
     }
 
@@ -197,32 +183,28 @@ public class DialogAddAndRevise extends androidx.fragment.app.DialogFragment {
         hasVest = dfItemBinding.vestCB.isChecked();
     }
 
-    public void reviseDefaultData() {
-        int position = 0;
-        int hour = Integer.parseInt(rvViewModel.getDialogAddAndReviseData().getValue().getTime().split(" ")[1].substring(0, 2));
-        int min = Integer.parseInt(rvViewModel.getDialogAddAndReviseData().getValue().getTime().split(":")[1]);
+    public void DefaultData() {
         if (rvViewModel.getDialogAddAndReviseData().getValue() != null) {
-            for (int i = 0; i < spinnerArrayList.size(); i++) {
-                if (spinnerArrayList.get(i).equals(String.valueOf(rvViewModel.getDialogAddAndReviseData().getValue().getChannelID()))) {
-                    position = i;
+            dfItemBinding.setData(rvViewModel.getDialogAddAndReviseData().getValue());
+            int position = 0;
+            int hour = Integer.parseInt(rvViewModel.getDialogAddAndReviseData().getValue().getTime().split(" ")[1].substring(0, 2));
+            int min = Integer.parseInt(rvViewModel.getDialogAddAndReviseData().getValue().getTime().split(":")[1]);
+            if (rvViewModel.getDialogAddAndReviseData().getValue() != null) {
+                for (int i = 0; i < spinnerArrayList.size(); i++) {
+                    if (spinnerArrayList.get(i).equals(String.valueOf(rvViewModel.getDialogAddAndReviseData().getValue().getChannelID()))) {
+                        position = i;
+                    }
                 }
             }
+            dfItemBinding.channelIDSpinnerDL.setSelection(position);
+            dfItemBinding.timeTimePicker.setHour(hour);
+            dfItemBinding.timeTimePicker.setMinute(min);
+            setColorDefaultPosition();
+        } else {
+            dfItemBinding.deviceEditTextDL.setText("");
+            dfItemBinding.colorRBRed.setChecked(true);
         }
-        dfItemBinding.channelIDSpinnerDL.setSelection(position);
-        dfItemBinding.timeTimePicker.setHour(hour);
-        dfItemBinding.timeTimePicker.setMinute(min);
-        setColorDefaultPosition();
     }
 
-    @Override
-    public void onResume() {
-//        final AlertDialog alertDialog = (AlertDialog)getDialog();
-//        if(alertDialog != null) {
-//            Button positiveButton = alertDialog.getButton(Dialog.BUTTON_POSITIVE);
-//            if (!dfItemBinding.deviceEditTextDL.getText().toString().equals("")) {
-//                positiveButton.setEnabled(true);
-//            } else positiveButton.setEnabled(false);
-//        }
-        super.onResume();
-    }
+
 }

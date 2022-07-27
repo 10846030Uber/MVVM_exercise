@@ -33,6 +33,13 @@ public class RvViewModel extends ViewModel {
 
     private final MutableLiveData<Data> dialogAddAndReviseData = new MutableLiveData<>();
 
+    private ArrayList<String> spinnerArrayList ;
+
+    private MutableLiveData<Boolean> dialogDisplay = new MutableLiveData<>(false);
+
+    private String event ;
+    private int position;
+
 
     private RvModel rvModel = new RvModel();
 
@@ -57,7 +64,7 @@ public class RvViewModel extends ViewModel {
     public LiveData<ArrayList<Data>> getEquippedData(){
         return equippedData;
     }
-    //刪除position位置的equipped資料
+
     public void setEquippedData(ArrayList<Data> data){
         equippedData.setValue(data);
     }
@@ -66,9 +73,16 @@ public class RvViewModel extends ViewModel {
         equippedData.getValue().add(0,getDialogAddAndReviseData().getValue());
         setEquippedData(getEquippedData().getValue());
     }
+    //刪除position位置的equipped資料
     public void removeEquippedData(int position){
         equippedData.getValue().remove(position);
         setEquippedData(equippedData.getValue());
+    }
+
+    public void reviseEquippedData(int position){
+        equippedData.getValue().remove(position);
+        equippedData.getValue().add(position,dialogAddAndReviseData.getValue());
+        equippedData.setValue(equippedData.getValue());
     }
 
     //搜尋資料
@@ -84,27 +98,63 @@ public class RvViewModel extends ViewModel {
             });
             return matchData;
         }
-
+    }
+    public void onAddButtonClick(){
+            resetDefaultData();
+            setEvent("ADD");
+            setDialogDisplay(true);
     }
 
-    public MutableLiveData<Data> getDialogAddAndReviseData() {
-        return dialogAddAndReviseData;
-    }
+//---------------------------分隔線---------------------------------------------
+public MutableLiveData<Data> getDialogAddAndReviseData() {
+    return dialogAddAndReviseData;
+}
+
     public void setDialogDefaultData(Data data){
         dialogAddAndReviseData.setValue(data);
     }
+
     public void setPositionDefaultData(int position){
         dialogAddAndReviseData.setValue(equippedData.getValue().get(position));
     }
     public void resetDefaultData(){
         dialogAddAndReviseData.setValue(null);
     }
-    public void reviseEquippedData(int position){
-        equippedData.getValue().remove(position);
-        equippedData.getValue().add(position,dialogAddAndReviseData.getValue());
-        equippedData.setValue(equippedData.getValue());
+
+public void setSpinnerArrayList() {
+    spinnerArrayList = new ArrayList<>();
+    spinnerArrayList.add("13");
+    spinnerArrayList.add("17");
+    spinnerArrayList.add("5");
+    spinnerArrayList.add("27");
+    spinnerArrayList.add("1");
+}
+    public ArrayList<String> getSpinnerArrayList() {
+        setSpinnerArrayList();
+        return spinnerArrayList;
     }
-//---------------------------分隔線---------------------------------------------
 
+    public MutableLiveData<Boolean> getDialogDisplay() {
+        return dialogDisplay;
+    }
 
+    public void setDialogDisplay(Boolean display) {
+        dialogDisplay.setValue(display);
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 }

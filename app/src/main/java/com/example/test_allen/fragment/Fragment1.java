@@ -55,14 +55,15 @@ public class Fragment1 extends Fragment implements ClickListenerRv{
 
     //建立Fragment以及RecycleView
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
          //將fragment.xml放進activity的放fragment容器//
         fragment1Binding = Fragment1Binding.inflate(inflater,container,false);
         //建立RecycleView
         fragment1Binding.RecycleViewData.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         fragment1Binding.RecycleViewData.setAdapter(rvAdapter);
+        setSearchButtonOnClick();
+        setSearchListener();
         //回傳view給activity
         return fragment1Binding.getRoot();
     }
@@ -72,12 +73,56 @@ public class Fragment1 extends Fragment implements ClickListenerRv{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //用VIewModelProvider尋找目前現有的ViewModel， 在Fragment1消失前ViewModel都不會重建
-        rvViewModel = new ViewModelProvider(getActivity()).get(RvViewModel.class);
+        rvViewModel = new ViewModelProvider(requireActivity()).get(RvViewModel.class);
         //binding綁定viewModel
         fragment1Binding.setRvViewModel(rvViewModel);
-        rvViewModel.getRvData();
+        rvViewModel.getEquippedData().observe(requireActivity(), this::onDataChanged);
+        rvViewModel.getDialogDisplay().observe(requireActivity(),aBoolean -> {
+            if(aBoolean){
+                dialogAddAndRevise = new DialogAddAndRevise();
+                dialogAddAndRevise.show(getParentFragmentManager(),"dfAdd");
+            }
+        });
+        if (savedInstanceState == null){
+            rvViewModel.getRvData();
+        }
     }
 
+
+
+    public void setSearchButtonOnClick(){
+        fragment1Binding.SearchBtn.setOnClickListener(v -> {
+            searchEvent();
+            Toast.makeText(getContext(),"沒有符合" + rvViewModel.getInputSearchColor().getValue() + "的資料",Toast.LENGTH_LONG).show();
+        });
+    }
+
+    public void setSearchListener(){
+        fragment1Binding.SearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchEvent();
+            }
+        });
+    }
+    public void searchEvent(){
+        ArrayList<Data> matchData = rvViewModel.searchColor();
+        if(matchData.isEmpty()){
+            Log.d(tag,"沒有符合");
+
+        }
+        onDataChanged(matchData);
+    }
 
     //刪除按鈕事件
     @Override
@@ -89,50 +134,15 @@ public class Fragment1 extends Fragment implements ClickListenerRv{
     //修改按鈕事件
     @Override
     public void onReviseButtonClick(View view,int position) {
+        rvViewModel.setPosition(position);
+        rvViewModel.setEvent("REVISE");
         rvViewModel.setPositionDefaultData(position);
-       dialogAddAndRevise = new DialogAddAndRevise(position);
-       dialogAddAndRevise.show(getChildFragmentManager(),"dfRevise");
+        rvViewModel.setDialogDisplay(true);
     }
 
-    @Override
     public void onDataChanged(ArrayList<Data> data) {
         rvAdapter.eventJudge(data);
     }
 
-//    @Override
-//    public void onResume() {
-//        Log.d(tag, "onResume");
-//        super.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        Log.d(tag, "onPause：與Activity的OnPause綁定");
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        Log.d(tag, "onStop：與Activity的OnStop綁定");
-//        super.onStop();
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        Log.d(tag, "onDestroyView：Fragment即將被保存或者刪除");
-//        super.onDestroyView();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        Log.d(tag, "onDestroy：還與Activity藕斷絲連中可以在Activity中找到");
-//        super.onDestroy();
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        Log.d(tag, "onDetach：徹底和Activity分手瞭");
-//        super.onDetach();
-//    }
 
 }

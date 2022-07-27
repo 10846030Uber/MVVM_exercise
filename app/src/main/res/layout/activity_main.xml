@@ -15,36 +15,7 @@
         android:layout_height="match_parent"
         android:layout_margin="15dp"
         android:orientation="vertical">
-    <EditText
-        android:id="@+id/Search_EditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@={rvViewModel.inputSearchColor}"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/Search_Btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="查詢"
-        app:layout_constraintEnd_toStartOf="@+id/Add_Btn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Search_EditText" />
-
-    <Button
-        android:id="@+id/Add_Btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="新增"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/Search_Btn"
-        app:layout_constraintTop_toBottomOf="@+id/Search_EditText" />
 
 
     <androidx.fragment.app.FragmentContainerView
@@ -55,10 +26,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Search_Btn"
+        app:layout_constraintTop_toTopOf="parent"
         >
 
 
     </androidx.fragment.app.FragmentContainerView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

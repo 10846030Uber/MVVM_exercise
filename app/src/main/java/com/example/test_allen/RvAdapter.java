@@ -1,5 +1,6 @@
 package com.example.test_allen;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
     private ArrayList<Data> listData;
     //按鈕事件interface
     private ClickListenerRv listenerRv;
-    private int position;
     //建構RvAdapter
     public RvAdapter(ArrayList<Data> listData,ClickListenerRv listenerRv) {
         this.listData = listData;
@@ -37,17 +37,10 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
     public void setListData(ArrayList<Data> listData) {
         this.listData = listData;
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void eventJudge(ArrayList<Data> changedData){
-        if (changedData.size() == listData.size()){
-            listData = changedData;
-            notifyDataSetChanged();
-        }else if(changedData.size() > listData.size()){
-            listData = changedData;
-            notifyItemInserted(0);
-        }else {
-            listData = changedData;
-            notifyItemRemoved(position);
-        }
+        listData = changedData;
+        notifyDataSetChanged();
     }
     //ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +53,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
             rvItemBinding.buttoDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    position = getBindingAdapterPosition();
                     listenerRv.onRemoveButtonClick(rvItemBinding.buttoDelete,getBindingAdapterPosition());
                 }
             });
