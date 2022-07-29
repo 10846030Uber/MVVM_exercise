@@ -4,15 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.InverseBindingAdapter;
-import androidx.databinding.InverseBindingListener;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,19 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.test_allen.ClickListenerRv;
-import com.example.test_allen.R;
 import com.example.test_allen.data_Format.Data;
 import com.example.test_allen.RvAdapter;
 import com.example.test_allen.databinding.Fragment1Binding;
 import com.example.test_allen.viewmodel.RvViewModel;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 
 public class Fragment1 extends Fragment implements ClickListenerRv{
